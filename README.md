@@ -1,6 +1,14 @@
+<p align="center"> 
+  <img src="Docs/Vid2Audio-logo.svg" Width="200px" Height="200"/>
+</p>
+
 # Vid2Audio 🌟
 
-A powerful and user-friendly desktop application for converting videos to various audio formats. Whether you're extracting audio from social media content or local video files, Vid2Audio makes the process simple and efficient.
+A powerful and user-friendly desktop application for converting videos to 
+various audio formats. Whether you're extracting audio from social media content or 
+local video files, Vid2Audio makes the process simple and efficient.
+
+![main-window-demo](https://raw.githubusercontent.com/LucasErrNotFound/Vid2Audio/main/Docs/main-window-demo.png)
 
 ## ✨ Features
 
