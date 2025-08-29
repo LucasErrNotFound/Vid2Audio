@@ -1,0 +1,25 @@
+<Application
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    x:Class="Vid2Audio.App"
+    xmlns:local="using:Vid2Audio"
+    RequestedThemeVariant="Light">
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    
+    <Application.Resources>
+        <FontFamily x:Key="JetbrainsFont">avares://Vid2Audio/Assets/Fonts#Jetbrains</FontFamily>
+        <FontFamily x:Key="ManropeFont">avares://Vid2Audio/Assets/Fonts#Manrope</FontFamily>
+        <FontFamily x:Key="LucideIcon">avares://Vid2Audio/Assets/Fonts#lucide</FontFamily>
+        <FontFamily x:Key="ShadUIIcon">avares://Vid2Audio/Assets/Fonts#shadui</FontFamily>
+    </Application.Resources>
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <shadui:ShadTheme />
+        <StyleInclude Source="avares://Vid2Audio/Styles/Index.axaml"/>
+    </Application.Styles>
+</Application>

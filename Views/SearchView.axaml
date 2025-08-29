@@ -1,0 +1,160 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Vid2Audio.ViewModels"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+    Width="1200"
+    Height="800"
+    Focusable="True"
+    x:Class="Vid2Audio.Views.SearchView"
+    x:DataType="vm:SearchViewModel">
+    
+    <Design.DataContext>
+        <vm:SearchViewModel />
+    </Design.DataContext>
+    
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="Yellow-100" Color="#FEF9C3" />
+        <SolidColorBrush x:Key="Yellow-400" Color="#FACC15" />
+        <SolidColorBrush x:Key="Yellow-500" Color="#EAB308" />
+        
+        <SolidColorBrush x:Key="Red-100" Color="#FEE2E2" />
+        <SolidColorBrush x:Key="Red-400" Color="#F87171" />
+        <SolidColorBrush x:Key="Red-500" Color="#EF4444" />
+        
+        <SolidColorBrush x:Key="Green-100" Color="#DCFCE7" />
+        <SolidColorBrush x:Key="Green-400" Color="#4ADE80" />
+        <SolidColorBrush x:Key="Green-500" Color="#22C55E" />
+        
+        <SolidColorBrush x:Key="Purple-100" Color="#F3E8FF" />
+        <SolidColorBrush x:Key="Purple-500" Color="#A855F7" />
+        
+        <SolidColorBrush x:Key="orange-100" Color="#FFEDD5" />
+        <SolidColorBrush x:Key="orange-500" Color="#F97316" />
+        
+        <SolidColorBrush x:Key="Cyan-400" Color="#22D3EE" />
+    </UserControl.Resources>
+    
+    <UserControl.Styles>
+        <Style Selector="Rectangle.HoverableRectangle">
+            <Setter Property="Stroke" Value="LightGray" />
+            <Setter Property="Cursor" Value="Arrow" />
+        </Style>
+        <Style Selector="Rectangle.HoverableRectangle:pointerover">
+            <Setter Property="Stroke" Value="{StaticResource Cyan-400}" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+    </UserControl.Styles>
+    
+    <DockPanel LastChildFill="True">
+        <StackPanel 
+            HorizontalAlignment="Center" 
+            Orientation="Vertical" 
+            Spacing="30"
+            Margin="0,80,0,0">
+            <Image 
+                Source="avares://Vid2Audio/Assets/Logos/Vid2Audio-logo.png"
+                Width="150"
+                Height="150"/>
+            <TextBlock 
+                TextAlignment="Center" 
+                TextWrapping="Wrap" 
+                Classes="h1" 
+                FontSize="40"
+                Width="600">
+                <Run Text="Convert Videos to Any Audio format with "/>
+                <Run Text="Vid" Foreground="{StaticResource Red-400}"/><Run Text="2" Foreground="{StaticResource Green-400}"/><Run Text="Audio" Foreground="{StaticResource Yellow-400}"/>
+            </TextBlock>
+            <TextBox
+                Watermark="Input your video link here..."
+                Width="500"
+                shadui:ControlAssist.Height="45"
+                Classes="Clearable"
+                FontSize="15"
+                Text="{CompiledBinding VideoLink, Mode=TwoWay}">
+                <TextBox.KeyBindings>
+                    <KeyBinding  Command="{CompiledBinding DetectEnterCommand}" Gesture="Enter" />
+                </TextBox.KeyBindings>
+            </TextBox>
+            <Grid Width="550">
+                <Rectangle 
+                    Classes="HoverableRectangle"
+                    StrokeDashArray="2, 1" 
+                    StrokeThickness="1.8"
+                    RadiusX="7" 
+                    RadiusY="7" 
+                    Fill="White" 
+                    Tapped="OpenFileDialog_OnTapped"/>
+                <StackPanel
+                    Orientation="Vertical" 
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,20" 
+                    Spacing="5"
+                    IsHitTestVisible="False">
+                    <StackPanel Orientation="Vertical" Spacing="10">
+                        <Border
+                            Width="90"
+                            Height="90"
+                            Margin="0,10"
+                            Background="#F5F5F5"
+                            BorderBrush="#CCCCCC"
+                            BorderThickness="1"
+                            CornerRadius="150"
+                            ClipToBounds="True">
+                            <Svg
+                                Width="50"
+                                Height="50"
+                                Path="avares://Vid2Audio/Assets/Svg/upload.svg"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock
+                        Text="Drop your video here or click to browse"
+                        HorizontalAlignment="Center"
+                        FontWeight="SemiBold"
+                        FontSize="17"/>
+                    <TextBlock
+                        Text="Supports MP4, MVK, AVI, MOV, and many more"
+                        HorizontalAlignment="Center"
+                        Classes="Caption Muted"/>
+                    <StackPanel 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        Spacing="15" 
+                        Margin="0,10,0,0">
+                        <shadui:Badge 
+                            Content="MP4" 
+                            FontSize="13"
+                            Padding="8,0"
+                            CornerRadius="7"
+                            Background="{StaticResource Yellow-100}"
+                            Foreground="{StaticResource Yellow-500}"/>
+                        <shadui:Badge 
+                            Content="MKV" 
+                            FontSize="13"
+                            Padding="8,0"
+                            CornerRadius="7"
+                            Background="{StaticResource Red-100}"
+                            Foreground="{StaticResource Red-500}"/>
+                        <shadui:Badge 
+                            Content="AVI" 
+                            FontSize="13"
+                            Padding="8,0"
+                            CornerRadius="7"
+                            Background="{StaticResource Green-100}"
+                            Foreground="{StaticResource Green-500}"/>
+                        <shadui:Badge 
+                            Content="MOV" 
+                            FontSize="13"
+                            Padding="8,0"
+                            CornerRadius="7"
+                            Background="{StaticResource Purple-100}"
+                            Foreground="{StaticResource Purple-500}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

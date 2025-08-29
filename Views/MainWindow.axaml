@@ -1,0 +1,40 @@
+<shadui:Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Vid2Audio.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+    Width="1200"
+    Height="800"
+    x:Class="Vid2Audio.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    Icon="avares://Vid2Audio/Assets/Icons/Vid2Audio-icon.ico"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Normal"
+    CanResize="False"
+    TitleFontWeight="SemiBold"
+    Focusable="True"
+    Title="Vid2Audio">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    
+    <shadui:Window.LogoContent>
+        <Svg
+            Width="25"
+            Height="25"
+            Margin="10,8,0,8"
+            Path="avares://Vid2Audio/Assets/Logos/Vid2Audio-logo.svg" />
+    </shadui:Window.LogoContent>
+    
+    <shadui:Window.Hosts>
+        <shadui:ToastHost Manager="{CompiledBinding ToastManager}" ZIndex="1000"/>
+        <shadui:DialogHost Manager="{CompiledBinding DialogManager}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadui:Window}}"/>
+    </shadui:Window.Hosts>
+    <Panel>
+        <TransitioningContentControl Content="{CompiledBinding SelectedPage}"/>
+    </Panel>
+</shadui:Window>
