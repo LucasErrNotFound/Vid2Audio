@@ -1,4 +1,4 @@
-# Vid2Audio 🌟:
+# Vid2Audio 🌟
 
 A powerful and user-friendly desktop application for converting videos to various audio formats. Whether you're extracting audio from social media content or local video files, Vid2Audio makes the process simple and efficient.
 
