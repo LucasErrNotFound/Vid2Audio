@@ -11,6 +11,7 @@ namespace Vid2Audio;
 [ServiceProvider]
 [Transient<MainWindowViewModel>]
 [Transient<SearchViewModel>]
+[Transient<ConversionViewModel>]
 [Singleton<DialogManager>]
 [Singleton<ToastManager>]
 [Singleton<IMessenger, WeakReferenceMessenger>]
