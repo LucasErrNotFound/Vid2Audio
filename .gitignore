@@ -1,3 +1,5 @@
+*.DotSettings
+
 bin/
 obj/
 /packages/
