@@ -78,6 +78,12 @@
                 <TextBox.KeyBindings>
                     <KeyBinding  Command="{CompiledBinding DetectEnterCommand}" Gesture="Enter" />
                 </TextBox.KeyBindings>
+                <TextBox.InnerRightContent>
+                    <Svg
+                        Width="20"
+                        Height="20"
+                        Path="avares://Vid2Audio/Assets/Svg/search.svg"/>
+                </TextBox.InnerRightContent>
             </TextBox>
             <Grid Width="550">
                 <Rectangle 
