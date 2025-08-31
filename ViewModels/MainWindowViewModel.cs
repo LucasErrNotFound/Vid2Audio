@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -8,10 +9,12 @@ using ShadUI;
 
 namespace Vid2Audio.ViewModels;
 
-public partial class MainWindowViewModel : ViewModelBase
+[Page("main-window")]
+public partial class MainWindowViewModel : ViewModelBase, INavigable, INotifyPropertyChanged
 {
     private readonly PageManager _pageManager;
     private readonly SearchViewModel _searchViewModel;
+    private readonly ConversionViewModel  _conversionViewModel;
     
     [ObservableProperty]
     private DialogManager _dialogManager;
@@ -25,12 +28,15 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private string _currentRoute = "search-view";
 
-    public MainWindowViewModel(DialogManager dialogManager, ToastManager toastManager, PageManager pageManager, SearchViewModel searchViewModel)
+    public MainWindowViewModel(DialogManager dialogManager, ToastManager toastManager, PageManager pageManager, SearchViewModel searchViewModel,  ConversionViewModel conversionViewModel)
     {
         _dialogManager = dialogManager;
         _toastManager = toastManager;
         _pageManager = pageManager;
         _searchViewModel = searchViewModel;
+        _conversionViewModel = conversionViewModel;
+
+        _pageManager.OnNavigate = SwitchPage;
     }
     
     public MainWindowViewModel()
@@ -39,6 +45,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _toastManager = new ToastManager();
         _pageManager = new PageManager(new ServiceProvider());
         _searchViewModel = new SearchViewModel();
+        _conversionViewModel = new ConversionViewModel();
     }
 
     [AvaloniaHotReload]
