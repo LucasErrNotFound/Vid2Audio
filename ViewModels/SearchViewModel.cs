@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -57,7 +59,10 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
         if (string.IsNullOrWhiteSpace(VideoLink))
             searchToastMessage.ShowError();
         else
+        {
             searchToastMessage.ShowInfo();
+            _pageManager.Navigate<ConversionViewModel>();
+        }
     }
 
     public async Task OpenFileDialog()
