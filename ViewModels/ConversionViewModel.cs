@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -12,6 +13,7 @@ namespace Vid2Audio.ViewModels;
 public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPropertyChanged
 {
     private string _videoLink = string.Empty;
+    private ObservableCollection<VideoItem> _videoList;
     
     private readonly DialogManager _dialogManager;
     private readonly ToastManager _toastManager;
@@ -35,6 +37,16 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     {
         get => _videoLink;
         set => SetProperty(ref _videoLink, value);
+    }
+
+    public ObservableCollection<VideoItem> VideoList
+    {
+        get => _videoList;
+        set
+        {
+            _videoList = value;
+            OnPropertyChanged();
+        }
     }
 
     [AvaloniaHotReload]
@@ -91,4 +103,12 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                 .ShowInfo();
         }
     }
+}
+
+public class VideoItem
+{
+    public string videoTitle { get; set; }
+    public string videoUploader { get; set; }
+    public string videoThumbnail { get; set; }
+    public long? viewCount { get; set; }
 }
