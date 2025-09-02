@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
+using Vid2Audio.Services;
 using Vid2Audio.VideoConverter.Youtube;
 
 namespace Vid2Audio.ViewModels;
@@ -16,6 +18,9 @@ namespace Vid2Audio.ViewModels;
 [Page("search-view")]
 public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropertyChanged
 {
+    [ObservableProperty] 
+    private bool _isSearchingVideo;
+    
     private string _videoLink = string.Empty;
     
     private readonly DialogManager _dialogManager;
@@ -62,15 +67,43 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
         else
         {
             searchToastMessage.ShowInfo();
-            _pageManager.Navigate<ConversionViewModel>();
+            IsSearchingVideo = true;
 
             try
             {
-                // await YoutubeConverter.DownloadYoutube(VideoLink);
+                _toastManager.CreateToast("Processing Video Link")
+                    .WithContent("Fetching video metedata")
+                    .DismissOnClick()
+                    .ShowInfo();
+
+                var videoData = await YoutubeConverter.GetVideoData(VideoLink);
+
+                {
+                    var videoItem = new VideoItem
+                    {
+                        VideoTitle = videoData?.Title ?? "No title",
+                        VideoUploader = videoData?.Uploader ?? "No uploader",
+                        VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
+                    };
+                    VideoManager.AddVideo(videoItem);
+
+                    _toastManager.CreateToast("Video Added Successfully")
+                        .WithContent($"Added: {videoItem.VideoTitle}")
+                        .DismissOnClick()
+                        .ShowSuccess();
+
+                    VideoLink = string.Empty;
+                }
+                
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsSearchingVideo = false;
+                _pageManager.Navigate<ConversionViewModel>();
             }
         }
     }

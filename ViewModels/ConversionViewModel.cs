@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
+using Vid2Audio.Services;
 using Vid2Audio.VideoConverter.Youtube;
 
 namespace Vid2Audio.ViewModels;
@@ -19,7 +20,7 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     private bool _isSearchingVideo;
     
     private string _videoLink = string.Empty;
-    private ObservableCollection<VideoItem> _videoList = [];
+    private ObservableCollection<VideoItem> _videoList = VideoManager.VideoList;
     
     private readonly DialogManager _dialogManager;
     private readonly ToastManager _toastManager;
@@ -91,7 +92,7 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                         VideoUploader = videoData?.Uploader ?? "No uploader",
                         VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
                     };
-                    VideoList.Add(videoItem);
+                    VideoManager.AddVideo(videoItem);
 
                     _toastManager.CreateToast("Video Added Successfully")
                         .WithContent($"Added: {videoItem.VideoTitle}")
