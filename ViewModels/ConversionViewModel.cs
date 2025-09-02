@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
+using Vid2Audio.VideoConverter.Youtube;
 
 namespace Vid2Audio.ViewModels;
 
@@ -13,7 +15,7 @@ namespace Vid2Audio.ViewModels;
 public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPropertyChanged
 {
     private string _videoLink = string.Empty;
-    private ObservableCollection<VideoItem> _videoList;
+    private ObservableCollection<VideoItem> _videoList = [];
     
     private readonly DialogManager _dialogManager;
     private readonly ToastManager _toastManager;
@@ -55,7 +57,7 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     }
     
     [RelayCommand]
-    private void DetectEnter()
+    private async Task DetectEnter()
     {
         var searchToastMessage = _toastManager.CreateToast(string.IsNullOrWhiteSpace(VideoLink)
                 ? "No Video Link Provided"
@@ -67,7 +69,41 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
         if (string.IsNullOrWhiteSpace(VideoLink))
             searchToastMessage.ShowError();
         else
-            searchToastMessage.ShowInfo();
+        {
+            try
+            {
+                _toastManager.CreateToast("Processing Video Link")
+                    .WithContent("Fetching video metedata")
+                    .DismissOnClick()
+                    .ShowInfo();
+                
+                var videoData = await YoutubeConverter.GetVideoData(VideoLink);
+
+                {
+                    var videoItem = new VideoItem
+                    {
+                        VideoTitle = videoData?.Title ?? "No title",
+                        VideoUploader = videoData?.Uploader ?? "No uploader",
+                        VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
+                    };
+                    VideoList.Add(videoItem);
+                    
+                    _toastManager.CreateToast("Video Added Successfully")
+                        .WithContent($"Added: {videoItem.VideoTitle}")
+                        .DismissOnClick()
+                        .ShowSuccess();
+                    
+                    VideoLink = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                _toastManager.CreateToast("Error Processing Video")
+                    .WithContent($"Failed to process video: {ex.Message}")
+                    .DismissOnClick()
+                    .ShowError();
+            }
+        }
     }
     
     public async Task OpenFileDialog()
@@ -107,8 +143,7 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
 
 public class VideoItem
 {
-    public string videoTitle { get; set; }
-    public string videoUploader { get; set; }
-    public string videoThumbnail { get; set; }
-    public long? viewCount { get; set; }
+    public string VideoTitle { get; set; } = string.Empty;
+    public string VideoUploader { get; set; } = string.Empty; 
+    public string VideoThumbnail { get; set; } = string.Empty;
 }
