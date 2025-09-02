@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
@@ -14,6 +15,9 @@ namespace Vid2Audio.ViewModels;
 [Page("conversion-view")]
 public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPropertyChanged
 {
+    [ObservableProperty] 
+    private bool _isSearchingVideo;
+    
     private string _videoLink = string.Empty;
     private ObservableCollection<VideoItem> _videoList = [];
     
@@ -70,13 +74,14 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
             searchToastMessage.ShowError();
         else
         {
+            IsSearchingVideo = true;
             try
             {
                 _toastManager.CreateToast("Processing Video Link")
                     .WithContent("Fetching video metedata")
                     .DismissOnClick()
                     .ShowInfo();
-                
+
                 var videoData = await YoutubeConverter.GetVideoData(VideoLink);
 
                 {
@@ -87,12 +92,12 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                         VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
                     };
                     VideoList.Add(videoItem);
-                    
+
                     _toastManager.CreateToast("Video Added Successfully")
                         .WithContent($"Added: {videoItem.VideoTitle}")
                         .DismissOnClick()
                         .ShowSuccess();
-                    
+
                     VideoLink = string.Empty;
                 }
             }
@@ -102,6 +107,10 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                     .WithContent($"Failed to process video: {ex.Message}")
                     .DismissOnClick()
                     .ShowError();
+            }
+            finally
+            {
+                IsSearchingVideo = false;
             }
         }
     }
