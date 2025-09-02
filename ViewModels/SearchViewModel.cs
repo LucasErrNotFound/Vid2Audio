@@ -9,6 +9,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
+using Vid2Audio.VideoConverter.Youtube;
 
 namespace Vid2Audio.ViewModels;
 
@@ -47,7 +48,7 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
     }
 
     [RelayCommand]
-    private void DetectEnter()
+    private async Task DetectEnter()
     {
         var searchToastMessage = _toastManager.CreateToast(string.IsNullOrWhiteSpace(VideoLink)
                 ? "No Video Link Provided"
@@ -62,6 +63,15 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
         {
             searchToastMessage.ShowInfo();
             _pageManager.Navigate<ConversionViewModel>();
+
+            try
+            {
+                await YoutubeConverter.DownloadYoutube(VideoLink);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 
