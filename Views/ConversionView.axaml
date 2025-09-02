@@ -152,127 +152,34 @@
                         <Interaction.Behaviors>
                             <scroll:VerticalScrollViewerAnimatedBehavior />
                         </Interaction.Behaviors>
-                        <Grid RowDefinitions="Auto Auto" RowSpacing="15">
-                            <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="33,0,0,0" Spacing="15">
                                 <Button Classes="Outline">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
                                             Width="20"
                                             Height="20"
-                                            Path="avares://Vid2Audio/Assets/Svg/square-check-big.svg" 
+                                            Path="avares://Vid2Audio/Assets/Svg/square-check-big.svg"
                                             Margin="0,0,8,0"
-                                            VerticalAlignment="Center"/>
-                                        <TextBlock Text="Select All" VerticalAlignment="Center"/>
+                                            VerticalAlignment="Center" />
+                                        <TextBlock Text="Select All" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Button>
-                                <Button 
+                                <Button
                                     Classes="Primary"
                                     Background="{StaticResource Green-500}">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
                                             Width="20"
                                             Height="20"
-                                            Path="avares://Vid2Audio/Assets/Svg/download.svg" 
+                                            Path="avares://Vid2Audio/Assets/Svg/download.svg"
                                             Margin="0,0,8,0"
-                                            VerticalAlignment="Center"/>
+                                            VerticalAlignment="Center" />
                                         <TextBlock Text="Download All" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
-                            <Grid Grid.Row="1" 
-                                  ColumnDefinitions="0.2* 2.3* * *" 
-                                  RowDefinitions="*"
-                                  RowSpacing="15"
-                                  VerticalAlignment="Top">
-                                <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
-                                    <CheckBox>
-                                    </CheckBox>
-                                </StackPanel>
-                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                                    <Border
-                                        Background="LightGray"
-                                        Height="80"
-                                        Width="140"
-                                        ClipToBounds="True">
-                                        <Image
-                                            Stretch="UniformToFill"
-                                            IsVisible="True"
-                                            Source="{CompiledBinding}"/>
-                                    </Border>
-                                    <Grid RowDefinitions="* * Auto" Margin="15,0,0,0" Width="200">
-                                        <StackPanel Grid.Row="0">
-                                            <TextBlock
-                                                Text="Fun.: We Are Young ft. Janelle Monáe [OFFICIAL VIDEO]"
-                                                TextWrapping="Wrap"
-                                                FontSize="13"
-                                                FontWeight="Bold" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                            <shadui:Badge 
-                                                Classes="Destructive">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Svg
-                                                        Width="17"
-                                                        Height="17"
-                                                        Path="avares://Vid2Audio/Assets/Svg/youtube.svg" 
-                                                        Margin="0,0,6,0"
-                                                        VerticalAlignment="Center"/>
-                                                    <TextBlock Text="YouTube" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </shadui:Badge>
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="2">
-                                            <TextBlock
-                                                Text="Fueled by Ramen"
-                                                Classes="Caption Muted"
-                                                TextWrapping="Wrap"
-                                                FontSize="13"
-                                                FontWeight="SemiBold" />
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                    <ComboBox SelectedIndex="0" Width="100">
-                                        <ComboBoxItem Content="MP3"/>
-                                        <ComboBoxItem Content="WAV"/>
-                                        <ComboBoxItem Content="FLAC"/>
-                                        <ComboBoxItem Content="M4A"/>
-                                        <ComboBoxItem Content="OGG"/>
-                                        <ComboBoxItem Content="WMA"/>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel 
-                                    Grid.Column="3" 
-                                    Orientation="Horizontal" 
-                                    HorizontalAlignment="Right" 
-                                    VerticalAlignment="Center"
-                                    Spacing="15">
-                                    <Button
-                                        Classes="Primary"
-                                        Background="{StaticResource Green-500}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Svg
-                                                Width="20"
-                                                Height="20"
-                                                Path="avares://Vid2Audio/Assets/Svg/download.svg" 
-                                                Margin="0,0,8,0"
-                                                VerticalAlignment="Center"/>
-                                            <TextBlock Text="Download" VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </Button>
-                                    <Button
-                                        Classes="Icon">
-                                        <shadui:ButtonAssist.Icon>
-                                            <Svg
-                                                Width="10"
-                                                Height="10"
-                                                Path="avares://Vid2Audio/Assets/Svg/x.svg"/>
-                                        </shadui:ButtonAssist.Icon>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                            <!--
-                            <ItemsControl Margin="40,0,24,24" ItemsSource="{CompiledBinding VideoList}">
+                            <ItemsControl Margin="0,15,0,0" ItemsSource="{CompiledBinding VideoList}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Spacing="24" />
@@ -280,11 +187,109 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
+                                        <Grid Grid.Row="1"
+                                              ColumnDefinitions="0.2* 2.3* * *"
+                                              RowDefinitions="*"
+                                              RowSpacing="15"
+                                              VerticalAlignment="Top">
+                                            <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                                                <CheckBox>
+                                                </CheckBox>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                                                <Border
+                                                    Background="LightGray"
+                                                    Height="80"
+                                                    Width="140"
+                                                    ClipToBounds="True">
+                                                    <Image
+                                                        Stretch="UniformToFill"
+                                                        IsVisible="True"
+                                                        Source="{CompiledBinding}" />
+                                                </Border>
+                                                <Grid RowDefinitions="* * Auto" Margin="15,0,0,0" Width="200">
+                                                    <StackPanel Grid.Row="0">
+                                                        <TextBlock
+                                                            Text="{CompiledBinding VideoTitle}"
+                                                            TextWrapping="Wrap"
+                                                            FontSize="13"
+                                                            FontWeight="Bold" />
+                                                    </StackPanel>
+                                                    <StackPanel 
+                                                        Grid.Row="1" 
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Top">
+                                                        <shadui:Badge Classes="Destructive">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Svg
+                                                                    Width="17"
+                                                                    Height="17"
+                                                                    Path="avares://Vid2Audio/Assets/Svg/youtube.svg"
+                                                                    Margin="0,0,6,0"
+                                                                    VerticalAlignment="Center" />
+                                                                <TextBlock 
+                                                                    Text="YouTube"
+                                                                    VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </shadui:Badge>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Row="2">
+                                                        <TextBlock
+                                                            Text="{CompiledBinding VideoUploader}"
+                                                            Classes="Caption Muted"
+                                                            TextWrapping="Wrap"
+                                                            FontSize="13"
+                                                            FontWeight="SemiBold" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </StackPanel>
+                                            <StackPanel 
+                                                Grid.Column="2" 
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center">
+                                                <ComboBox SelectedIndex="0" Width="100">
+                                                    <ComboBoxItem Content="MP3" />
+                                                    <ComboBoxItem Content="WAV" />
+                                                    <ComboBoxItem Content="FLAC" />
+                                                    <ComboBoxItem Content="M4A" />
+                                                    <ComboBoxItem Content="OGG" />
+                                                    <ComboBoxItem Content="WMA" />
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel
+                                                Grid.Column="3"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Spacing="15">
+                                                <Button
+                                                    Classes="Primary"
+                                                    Background="{StaticResource Green-500}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Svg
+                                                            Width="20"
+                                                            Height="20"
+                                                            Path="avares://Vid2Audio/Assets/Svg/download.svg"
+                                                            Margin="0,0,8,0"
+                                                            VerticalAlignment="Center" />
+                                                        <TextBlock Text="Download" VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button
+                                                    Classes="Icon">
+                                                    <shadui:ButtonAssist.Icon>
+                                                        <Svg
+                                                            Width="10"
+                                                            Height="10"
+                                                            Path="avares://Vid2Audio/Assets/Svg/x.svg" />
+                                                    </shadui:ButtonAssist.Icon>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            -->
-                        </Grid>
+                        </StackPanel>
                     </ScrollViewer>
                 </DockPanel>
             </shadui:Card>
