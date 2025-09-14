@@ -18,7 +18,7 @@ local video files, Vid2Audio makes the process simple and efficient.
 - [ ] **Instagram** - Convert Instagram Reels and videos to audio formats
 
 ### 📁 Local File Processing
-- [x] **Drag & Drop** - Simply drag video files into the application
+- [ ] **Drag & Drop** - Simply drag video files into the application
 - [x] **Multiple Formats** - Supports MP4, MKV, AVI, MOV, and many more
 - [ ] **Batch Processing** - Convert multiple files at once
 
