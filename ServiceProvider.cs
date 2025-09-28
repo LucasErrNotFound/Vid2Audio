@@ -1,9 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.Messaging;
 using Jab;
 using Serilog;
 using ShadUI;
+using Vid2Audio.Services;
+using Vid2Audio.Services.Interface;
 using Vid2Audio.ViewModels;
 
 namespace Vid2Audio;
@@ -17,6 +20,7 @@ namespace Vid2Audio;
 [Singleton<IMessenger, WeakReferenceMessenger>]
 [Singleton(typeof(ILogger), Factory = nameof(LoggerFactory))]
 [Singleton(typeof(PageManager), Factory = nameof(PageManagerFactory))]
+[Singleton(typeof(IVideoService), Factory = nameof(VideoServiceFactory))]
 public partial class ServiceProvider
 {
     public static ILogger LoggerFactory()
@@ -41,5 +45,13 @@ public partial class ServiceProvider
     public PageManager PageManagerFactory()
     {
         return new PageManager(this);
+    }
+    
+    public static IVideoService VideoServiceFactory()
+    {
+        return new VideoService
+        {
+            VideoList = new ObservableCollection<VideoItem>()
+        };
     }
 }
