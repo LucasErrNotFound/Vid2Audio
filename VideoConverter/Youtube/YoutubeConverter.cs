@@ -22,14 +22,10 @@ public class YoutubeConverter
             };
             var res = await ytdl.RunVideoDataFetch(youtubeUrl);
 
-            if (res.Success && res.Data is not null)
-            {
-                VideoData video = res.Data;
-                return video;
-            }
+            if (!res.Success || res.Data is null) return null;
             
-            Debug.WriteLine($"Failed to fetch video data: {res.ErrorOutput}");
-            return null;
+            VideoData video = res.Data;
+            return video;
         }
         catch (Exception ex)
         {
