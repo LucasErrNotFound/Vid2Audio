@@ -155,11 +155,6 @@ public partial class VideoItem : ObservableObject
         _videoService = videoService;
     }
     
-    public VideoItem()
-    {
-        _videoService = null!;
-    }
-    
     [ObservableProperty] 
     private string[] _audioFormatItems = ["MP3", "WAV", "FLAC", "M4A", "OGG", "WMA"];
     
@@ -170,7 +165,10 @@ public partial class VideoItem : ObservableObject
     public string VideoTitle { get; set; } = string.Empty;
     public string VideoUploader { get; set; } = string.Empty; 
     public string VideoThumbnail { get; set; } = string.Empty;
-    
+
     [RelayCommand]
-    private void DeleteVideoItem() => _videoService.RemoveVideo(this);
+    private void DeleteVideoItem()
+    {
+        _videoService.RemoveVideo(this);
+    }
 }

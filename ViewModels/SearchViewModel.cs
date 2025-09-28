@@ -82,7 +82,7 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
                 var videoData = await YoutubeConverter.GetVideoData(VideoLink);
 
                 {
-                    var videoItem = new VideoItem
+                    var videoItem = new VideoItem(_videoService)
                     {
                         VideoTitle = videoData?.Title ?? "No title",
                         VideoUploader = videoData?.Uploader ?? "No uploader",
