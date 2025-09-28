@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
 using Vid2Audio.Services;
+using Vid2Audio.Services.Interface;
 using Vid2Audio.VideoConverter.Youtube;
 
 namespace Vid2Audio.ViewModels;
@@ -20,17 +21,19 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     private bool _isSearchingVideo;
     
     private string _videoLink = string.Empty;
-    private ObservableCollection<VideoItem> _videoList = VideoManager.VideoList;
+    public ObservableCollection<VideoItem> VideoList => _videoService.VideoList;
     
     private readonly DialogManager _dialogManager;
     private readonly ToastManager _toastManager;
     private readonly PageManager _pageManager;
+    private readonly IVideoService _videoService;
 
-    public ConversionViewModel(DialogManager dialogManager, ToastManager toastManager, PageManager pageManager)
+    public ConversionViewModel(DialogManager dialogManager, ToastManager toastManager, PageManager pageManager,  IVideoService videoService)
     {
         _dialogManager = dialogManager;
         _toastManager = toastManager;
         _pageManager = pageManager;
+        _videoService = videoService;
     }
 
     public ConversionViewModel()
@@ -38,22 +41,16 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
         _dialogManager =  new DialogManager();
         _toastManager = new ToastManager();
         _pageManager = new PageManager(new ServiceProvider());
+        _videoService = new VideoService 
+        { 
+            VideoList = []
+        };
     }
     
     public string VideoLink
     {
         get => _videoLink;
         set => SetProperty(ref _videoLink, value);
-    }
-
-    public ObservableCollection<VideoItem> VideoList
-    {
-        get => _videoList;
-        set
-        {
-            _videoList = value;
-            OnPropertyChanged();
-        }
     }
 
     [AvaloniaHotReload]
@@ -86,13 +83,13 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                 var videoData = await YoutubeConverter.GetVideoData(VideoLink);
 
                 {
-                    var videoItem = new VideoItem
+                    var videoItem = new VideoItem(_videoService)
                     {
                         VideoTitle = videoData?.Title ?? "No title",
                         VideoUploader = videoData?.Uploader ?? "No uploader",
                         VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
                     };
-                    VideoManager.AddVideo(videoItem);
+                    _videoService.AddVideo(videoItem);
 
                     _toastManager.CreateToast("Video Added Successfully")
                         .WithContent($"Added: {videoItem.VideoTitle}")
@@ -151,9 +148,29 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     }
 }
 
-public class VideoItem
+public partial class VideoItem : ObservableObject
 {
+    public VideoItem(IVideoService videoService)
+    {
+        _videoService = videoService;
+    }
+    
+    public VideoItem()
+    {
+        _videoService = null!;
+    }
+    
+    [ObservableProperty] 
+    private string[] _audioFormatItems = ["MP3", "WAV", "FLAC", "M4A", "OGG", "WMA"];
+    
+    [ObservableProperty]
+    private string? _selectedAudioFormat = "MP3";
+    
+    private readonly IVideoService _videoService;
     public string VideoTitle { get; set; } = string.Empty;
     public string VideoUploader { get; set; } = string.Empty; 
     public string VideoThumbnail { get; set; } = string.Empty;
+    
+    [RelayCommand]
+    private void DeleteVideoItem() => _videoService.RemoveVideo(this);
 }
