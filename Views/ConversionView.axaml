@@ -264,7 +264,8 @@
                                                 Spacing="15">
                                                 <Button
                                                     Classes="Primary"
-                                                    Background="{StaticResource Green-500}">
+                                                    Background="{StaticResource Green-500}"
+                                                    Command="{CompiledBinding DownloadVideoItemCommand}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Svg
                                                             Width="20"
@@ -290,6 +291,14 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <StackPanel Margin="20">
+                                <ProgressBar  
+                                    Height="20" 
+                                    Minimum="0" 
+                                    Maximum="100" 
+                                    Value="{Binding $parent[UserControl].((vm:VideoItem)DataContext).DownloadProgress}"
+                                    ShowProgressText="True"/>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>

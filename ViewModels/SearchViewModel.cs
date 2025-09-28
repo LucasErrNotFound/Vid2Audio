@@ -86,7 +86,8 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
                     {
                         VideoTitle = videoData?.Title ?? "No title",
                         VideoUploader = videoData?.Uploader ?? "No uploader",
-                        VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
+                        VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail",
+                        VideoUrl = videoData?.WebpageUrl ?? "No URL"
                     };
                     _videoService.AddVideo(videoItem);
 

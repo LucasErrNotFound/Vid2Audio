@@ -87,7 +87,8 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                     {
                         VideoTitle = videoData?.Title ?? "No title",
                         VideoUploader = videoData?.Uploader ?? "No uploader",
-                        VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail"
+                        VideoThumbnail = videoData?.Thumbnail ?? "No thumbnail",
+                        VideoUrl = videoData?.WebpageUrl ?? "No URL"
                     };
                     _videoService.AddVideo(videoItem);
 
@@ -161,14 +162,21 @@ public partial class VideoItem : ObservableObject
     [ObservableProperty]
     private string? _selectedAudioFormat = "MP3";
     
+    [ObservableProperty]
+    private double _downloadProgress = 0;
+    
+    [ObservableProperty]
+    private bool _isDownloading = false;
+    
     private readonly IVideoService _videoService;
     public string VideoTitle { get; set; } = string.Empty;
     public string VideoUploader { get; set; } = string.Empty; 
     public string VideoThumbnail { get; set; } = string.Empty;
+    public string VideoUrl { get; set; } = string.Empty;
 
     [RelayCommand]
-    private void DeleteVideoItem()
-    {
-        _videoService.RemoveVideo(this);
-    }
+    private void DeleteVideoItem() => _videoService.RemoveVideo(this);
+
+    [RelayCommand]
+    private void DownloadVideoItem() => _videoService.DownloadVideo(this);
 }
