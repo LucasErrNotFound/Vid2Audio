@@ -250,14 +250,11 @@
                                                 Grid.Column="2" 
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center">
-                                                <ComboBox SelectedIndex="0" Width="100">
-                                                    <ComboBoxItem Content="MP3" />
-                                                    <ComboBoxItem Content="WAV" />
-                                                    <ComboBoxItem Content="FLAC" />
-                                                    <ComboBoxItem Content="M4A" />
-                                                    <ComboBoxItem Content="OGG" />
-                                                    <ComboBoxItem Content="WMA" />
-                                                </ComboBox>
+                                                <ComboBox 
+                                                    SelectedIndex="0" 
+                                                    Width="100"
+                                                    ItemsSource="{CompiledBinding AudioFormatItems}"
+                                                    SelectedItem="{CompiledBinding SelectedAudioFormat}"/>
                                             </StackPanel>
                                             <StackPanel
                                                 Grid.Column="3"
@@ -279,7 +276,8 @@
                                                     </StackPanel>
                                                 </Button>
                                                 <Button
-                                                    Classes="Icon">
+                                                    Classes="Icon"
+                                                    Command="{CompiledBinding DeleteVideoItemCommand}">
                                                     <shadui:ButtonAssist.Icon>
                                                         <Svg
                                                             Width="10"
