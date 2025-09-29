@@ -13,7 +13,7 @@ local video files, Vid2Audio makes the process simple and efficient.
 ## ✨ Features
 
 ### 🌐 Social Media Support
-- [ ] **YouTube** - Download and convert any YouTube video to audio
+- [x] **YouTube** - Download and convert any YouTube video to audio
 - [ ] **Facebook** - Extract audio from Facebook videos and posts
 - [ ] **Instagram** - Convert Instagram Reels and videos to audio formats
 
@@ -23,10 +23,10 @@ local video files, Vid2Audio makes the process simple and efficient.
 - [ ] **Batch Processing** - Convert multiple files at once
 
 ### 🎧 Audio Output Options
-- [ ] MP3 (most popular)
-- [ ] WAV (uncompressed quality)
+- [x] MP3 (most popular)
+- [x] WAV (uncompressed quality)
 - [ ] AAC (Apple standard)
-- [ ] FLAC (lossless compression)
+- [x] FLAC (lossless compression)
 - [ ] And more formats
 
 ### 🚀 Key Benefits
@@ -37,18 +37,16 @@ local video files, Vid2Audio makes the process simple and efficient.
 - [x] **No Account Required** - Download and convert without registration
 
 ## 🛠️ Built With
-- [x] Avalonia UI - Cross-platform .NET framework
-- [x] ShadUI - Avalonia UI Library
-- [ ] FFmpeg - Video/audio processing
-- [ ] VideoLibrary - YouTube video download library
-- [ ] MediaToolkit - .NET wrapper for FFmpeg
-- [x] .NET 8 - Modern C# development
+- [x] Avalonia UI - Cross-platform .NET desktop framework
+- [x] ShadUI - Avalonia 3rd Party UI Library
+- [x] YoutubeDLSharp - YouTube video download library using FFMPEG and Yt-Dlp
+- [x] .NET 9 - Modern C# development
 
 ## 📥 Installation
 > [WIP] :building_construction:
 
 ## 🎯 Use Cases
-- [ ] Extract music from YouTube videos
+- [x] Extract music from YouTube videos
 - [ ] Convert video podcasts to audio
 - [ ] Save Instagram Reels as audio files
 - [ ] Create audio archives from video content
