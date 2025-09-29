@@ -20,6 +20,7 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     [ObservableProperty] 
     private bool _isSearchingVideo;
     
+    private bool _isVideoLinkValid;
     private string _videoLink = string.Empty;
     public ObservableCollection<VideoItem> VideoList => _videoService.VideoList;
     
@@ -61,15 +62,13 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
     [RelayCommand]
     private async Task DetectEnter()
     {
-        var searchToastMessage = _toastManager.CreateToast(string.IsNullOrWhiteSpace(VideoLink)
-                ? "No Video Link Provided"
-                : "Link Detected")
-            .WithContent(string.IsNullOrWhiteSpace(VideoLink)
-                ? "Please enter the video link."
-                : $"Link: {VideoLink}")
-            .DismissOnClick();
         if (string.IsNullOrWhiteSpace(VideoLink))
-            searchToastMessage.ShowError();
+        {
+            _toastManager.CreateToast("No Video Link Provided")
+                .WithContent("Please enter the video link.")
+                .DismissOnClick()
+                .ShowError();
+        }
         else
         {
             IsSearchingVideo = true;
@@ -81,9 +80,20 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
                     .ShowInfo();
 
                 var videoData = await YoutubeConverter.GetVideoData(VideoLink);
+                
+                if (videoData == null)
+                {
+                    _toastManager.CreateToast("Failed to get video data")
+                        .WithContent("Can't find video, please check the video link again.")
+                        .DismissOnClick()
+                        .ShowError();
+                    _isVideoLinkValid = false;
+                    return;
+                }
+                _isVideoLinkValid = true;
 
                 {
-                    var videoItem = new VideoItem(_videoService)
+                    var videoItem = new VideoItem(_videoService, _toastManager)
                     {
                         VideoTitle = videoData?.Title ?? "No title",
                         VideoUploader = videoData?.Uploader ?? "No uploader",
@@ -151,9 +161,12 @@ public partial class ConversionViewModel : ViewModelBase, INavigable, INotifyPro
 
 public partial class VideoItem : ObservableObject
 {
-    public VideoItem(IVideoService videoService)
+    private readonly ToastManager _toastManager;
+    
+    public VideoItem(IVideoService videoService, ToastManager toastManager)
     {
         _videoService = videoService;
+        _toastManager = toastManager;
     }
     
     [ObservableProperty] 
@@ -163,10 +176,7 @@ public partial class VideoItem : ObservableObject
     private string? _selectedAudioFormat = "MP3";
     
     [ObservableProperty]
-    private double _downloadProgress = 0;
-    
-    [ObservableProperty]
-    private bool _isDownloading = false;
+    private bool _isDownloading;
     
     private readonly IVideoService _videoService;
     public string VideoTitle { get; set; } = string.Empty;
@@ -178,5 +188,28 @@ public partial class VideoItem : ObservableObject
     private void DeleteVideoItem() => _videoService.RemoveVideo(this);
 
     [RelayCommand]
-    private void DownloadVideoItem() => _videoService.DownloadVideo(this);
+    private async Task DownloadVideoItem()
+    {
+        _toastManager.CreateToast("Downloading, please wait...")
+            .WithContent($"Downloading: {VideoTitle}")
+            .DismissOnClick()
+            .ShowInfo();
+        
+        var result = await _videoService.DownloadVideo(this);
+
+        if (result)
+        {
+            _toastManager.CreateToast("Audio Download Successfully")
+                .WithContent($"Title: {VideoTitle}")
+                .DismissOnClick()
+                .ShowSuccess();
+        }
+        else
+        {
+            _toastManager.CreateToast("Audio Download Failed")
+                .WithContent($"Title: {VideoTitle}")
+                .DismissOnClick()
+                .ShowError();
+        }
+    }
 }

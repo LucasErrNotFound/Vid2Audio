@@ -21,7 +21,8 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
 {
     [ObservableProperty] 
     private bool _isSearchingVideo;
-    
+
+    private bool _isVideoLinkValid;
     private string _videoLink = string.Empty;
     
     private readonly DialogManager _dialogManager;
@@ -58,18 +59,15 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
     [RelayCommand]
     private async Task DetectEnter()
     {
-        var searchToastMessage = _toastManager.CreateToast(string.IsNullOrWhiteSpace(VideoLink)
-                ? "No Video Link Provided"
-                : "Link Detected")
-            .WithContent(string.IsNullOrWhiteSpace(VideoLink)
-                ? "Please enter the video link."
-                : $"Link: {VideoLink}")
-            .DismissOnClick();
         if (string.IsNullOrWhiteSpace(VideoLink))
-            searchToastMessage.ShowError();
+        {
+            _toastManager.CreateToast("No Video Link Provided")
+                .WithContent("Please enter the video link.")
+                .DismissOnClick()
+                .ShowError();
+        }
         else
         {
-            searchToastMessage.ShowInfo();
             IsSearchingVideo = true;
 
             try
@@ -80,9 +78,20 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
                     .ShowInfo();
 
                 var videoData = await YoutubeConverter.GetVideoData(VideoLink);
-
+                
+                if (videoData == null)
                 {
-                    var videoItem = new VideoItem(_videoService)
+                    _toastManager.CreateToast("Failed to get video data")
+                        .WithContent("Can't find video, please check the video link again.")
+                        .DismissOnClick()
+                        .ShowError();
+                    _isVideoLinkValid = false;
+                    return;
+                }
+                _isVideoLinkValid = true;
+                
+                {
+                    var videoItem = new VideoItem(_videoService, _toastManager)
                     {
                         VideoTitle = videoData?.Title ?? "No title",
                         VideoUploader = videoData?.Uploader ?? "No uploader",
@@ -100,14 +109,10 @@ public partial class SearchViewModel : ViewModelBase, INavigable, INotifyPropert
                 }
                 
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
             finally
             {
                 IsSearchingVideo = false;
-                _pageManager.Navigate<ConversionViewModel>();
+                if (_isVideoLinkValid) _pageManager.Navigate<ConversionViewModel>();
             }
         }
     }
