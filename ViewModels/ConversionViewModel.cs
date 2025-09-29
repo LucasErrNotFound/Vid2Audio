@@ -170,7 +170,7 @@ public partial class VideoItem : ObservableObject
     }
     
     [ObservableProperty] 
-    private string[] _audioFormatItems = ["MP3", "WAV", "FLAC", "M4A", "OGG", "WMA"];
+    private string[] _audioFormatItems = ["MP3", "WAV", "FLAC", "M4A", "AAC"];
     
     [ObservableProperty]
     private string? _selectedAudioFormat = "MP3";

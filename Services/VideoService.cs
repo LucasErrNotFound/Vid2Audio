@@ -34,7 +34,7 @@ public class VideoService : IVideoService
             "WAV" => AudioConversionFormat.Wav,
             "FLAC" => AudioConversionFormat.Flac,
             "M4A" => AudioConversionFormat.M4a,
-            //"OGG" => AudioConversionFormat.Vorbis,
+            "AAC" => AudioConversionFormat.Aac,
             _ => AudioConversionFormat.Mp3
         };
         
