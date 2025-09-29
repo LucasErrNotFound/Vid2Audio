@@ -25,7 +25,7 @@ local video files, Vid2Audio makes the process simple and efficient.
 ### 🎧 Audio Output Options
 - [x] MP3 (most popular)
 - [x] WAV (uncompressed quality)
-- [ ] AAC (Apple standard)
+- [x] AAC (Apple standard)
 - [x] FLAC (lossless compression)
 - [ ] And more formats
 
