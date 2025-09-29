@@ -1,5 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Vid2Audio.Services.Interface;
 using Vid2Audio.ViewModels;
@@ -17,7 +19,7 @@ public class VideoService : IVideoService
         VideoList.Add(videoItem);
     }
     
-    public async Task DownloadVideo(VideoItem videoItem)
+    public async Task<bool> DownloadVideo(VideoItem videoItem)
     {
         var ytdl = new YoutubeDL
         {
@@ -37,7 +39,7 @@ public class VideoService : IVideoService
         };
         
         var res = await ytdl.RunAudioDownload(videoItem.VideoUrl, audioFormat);
-        Debug.WriteLine(res.Success ? "Success" : "Error");
+        return res.Success;
     }
     
     public void RemoveVideo(VideoItem videoItem)

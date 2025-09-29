@@ -8,7 +8,7 @@ public interface IVideoService
 {
     ObservableCollection<VideoItem> VideoList { get; set; }
     void AddVideo(VideoItem videoItem);
-    Task DownloadVideo(VideoItem videoItem);
+    Task<bool> DownloadVideo(VideoItem videoItem);
 
     void RemoveVideo(VideoItem videoItem);
     void ClearVideos();
