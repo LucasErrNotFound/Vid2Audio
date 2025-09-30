@@ -1,11 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using Vid2Audio.Services.Interface;
 using Vid2Audio.ViewModels;
 using YoutubeDLSharp;
+using YoutubeDLSharp.Metadata;
 using YoutubeDLSharp.Options;
 
 namespace Vid2Audio.Services;
@@ -18,8 +17,27 @@ public class VideoService : IVideoService
     {
         VideoList.Add(videoItem);
     }
+
+    public bool ValidateVideoUrl(string videoUrl)
+    {
+        if (string.IsNullOrWhiteSpace(videoUrl))
+            return false;
+
+        return Uri.TryCreate(videoUrl, UriKind.Absolute, out var uri) 
+               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
+    public async Task<VideoData?> FetchVideoDataAsync(string videoUrl)
+    {
+        var ytdl = new YoutubeDL { YoutubeDLPath = @"Binaries\yt-dlp.exe" };
+        var result = await ytdl.RunVideoDataFetch(videoUrl);
+        
+        if (!result.Success || result.Data is null) return null;
+        VideoData videoData = result.Data;
+        return videoData;
+    }
     
-    public async Task<bool> DownloadVideo(VideoItem videoItem)
+    public async Task<bool> DownloadVideoAsync(VideoItem videoItem)
     {
         var ytdl = new YoutubeDL
         {
