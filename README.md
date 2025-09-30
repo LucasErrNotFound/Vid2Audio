@@ -33,7 +33,7 @@ local video files, Vid2Audio makes the process simple and efficient.
 - [x] **Easy to Use** - Clean, intuitive interface
 - [ ] **Fast Conversion** - Optimized processing engine
 - [ ] **Quality Preservation** - Maintain original audio quality
-- [x] **Cross-Platform** - Works on Windows, macOS, and Linux
+- [ ] **Cross-Platform** - Works on Windows, macOS, and Linux
 - [x] **No Account Required** - Download and convert without registration
 
 ## 🛠️ Built With
