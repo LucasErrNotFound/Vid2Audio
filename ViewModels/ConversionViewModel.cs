@@ -196,20 +196,11 @@ public partial class VideoItem : ObservableObject
             .ShowInfo();
         
         var result = await _videoService.DownloadVideo(this);
-
-        if (result)
-        {
-            _toastManager.CreateToast("Audio Download Successfully")
-                .WithContent($"Title: {VideoTitle}")
-                .DismissOnClick()
-                .ShowSuccess();
-        }
-        else
-        {
-            _toastManager.CreateToast("Audio Download Failed")
-                .WithContent($"Title: {VideoTitle}")
-                .DismissOnClick()
-                .ShowError();
-        }
+        var toast = _toastManager.CreateToast(result ? "Audio Download Successfully" : "Audio Download Failed")
+            .WithContent($"Title: {VideoTitle}")
+            .DismissOnClick();
+        
+        if (result) toast.ShowSuccess();
+        else toast.ShowError();
     }
 }
