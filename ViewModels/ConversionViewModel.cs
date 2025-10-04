@@ -1,5 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
@@ -15,6 +19,21 @@ namespace Vid2Audio.ViewModels;
 [Page("conversion-view")]
 public partial class ConversionViewModel : VideoViewModelBase, INavigable 
 {
+    [ObservableProperty]
+    private bool _isAllSelected;
+    
+    [ObservableProperty]
+    private bool _isDownloadAllVisible;
+    
+    [ObservableProperty]
+    private bool _isClearAllVisible;
+
+    [ObservableProperty]
+    private bool _isCheckBoxVisible;
+    
+    [ObservableProperty]
+    private string _selectAllButtonText = "Select All";
+    
     public ObservableCollection<VideoItem> VideoList => VideoService!.VideoList;
 
     public ConversionViewModel(
@@ -24,6 +43,27 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
         IVideoService videoService)
         : base(dialogManager, toastManager, pageManager, videoService)
     {
+        VideoList.CollectionChanged += (s, e) =>
+        {
+            if (e.NewItems != null)
+            {
+                foreach (VideoItem item in e.NewItems)
+                {
+                    item.PropertyChanged += VideoItem_PropertyChanged;
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (VideoItem item in e.OldItems)
+                {
+                    item.PropertyChanged -= VideoItem_PropertyChanged;
+                }
+            }
+            UpdateVisibilityStates();
+            UpdateSelectAllState();
+        };
+        UpdateVisibilityStates();
     }
 
     public ConversionViewModel()
@@ -70,6 +110,78 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
         }
     }
     
+    [RelayCommand]
+    private void ToggleSelectAll()
+    {
+        foreach (var video in VideoList)
+        {
+            video.PropertyChanged -= VideoItem_PropertyChanged;
+            video.IsVideoSelected = IsAllSelected;
+            video.PropertyChanged += VideoItem_PropertyChanged;
+        }
+    
+        SelectAllButtonText = IsAllSelected ? "Unselect All" : "Select All";
+        UpdateVisibilityStates();
+    }
+
+    [RelayCommand]
+    private void ShowVideoItemsDeletionDialog(VideoItem videoItem)
+    {
+        DialogManager!
+            .CreateDialog(
+                "Are you absolutely sure?",
+                "This action cannot be undone. This will permanently clear all of your added video items.")
+            .WithPrimaryButton("Continue", OnSubmitDeleteMultipleVideoItems, DialogButtonStyle.Destructive)
+            .WithCancelButton("Cancel")
+            .WithMaxWidth(512)
+            .Dismissible()
+            .Show();
+    }
+
+    private async Task OnSubmitDeleteMultipleVideoItems()
+    {
+        var selectedVideoItems = VideoList.Where(item => item.IsVideoSelected).ToList();
+        if (selectedVideoItems.Count == 0) return;
+
+        foreach (var item in selectedVideoItems)
+        {
+            await Task.Delay(100);
+            VideoList.Remove(item);
+        }
+        
+        IsAllSelected = false;
+        SelectAllButtonText = "Select All";
+        
+        ToastManager!.CreateToast("Clear video items")
+            .WithContent("Video items cleared successfully!")
+            .DismissOnClick()
+            .ShowSuccess();
+    }
+    
+    private void UpdateVisibilityStates()
+    {
+        var count = VideoList.Count;
+        var selectedCount = VideoList.Count(v => v.IsVideoSelected);
+    
+        IsCheckBoxVisible = count >= 2;
+        IsDownloadAllVisible = count >= 2 && selectedCount >= 2;
+        IsClearAllVisible = count >= 2 && selectedCount >= 2;
+    }
+    
+    private void UpdateSelectAllState()
+    {
+        if (VideoList.Count == 0)
+        {
+            IsAllSelected = false;
+            SelectAllButtonText = "Select All";
+            return;
+        }
+    
+        var allSelected = VideoList.All(v => v.IsVideoSelected);
+        IsAllSelected = allSelected;
+        SelectAllButtonText = allSelected ? "Unselect All" : "Select All";
+    }
+    
     public async Task OpenFileDialog()
     {
         var topLevel = App.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
@@ -103,6 +215,13 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
                 .ShowInfo();
         }
     }
+    
+    private void VideoItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(VideoItem.IsVideoSelected)) return;
+        UpdateSelectAllState();
+        UpdateVisibilityStates();
+    }
 }
 
 public partial class VideoItem : ObservableObject
@@ -123,6 +242,9 @@ public partial class VideoItem : ObservableObject
     
     [ObservableProperty]
     private bool _isDownloading;
+    
+    [ObservableProperty]
+    private bool _isVideoSelected;
     
     private readonly IVideoService _videoService;
     public string VideoTitle { get; set; } = string.Empty;

@@ -18,6 +18,8 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <SolidColorBrush x:Key="Black-500" Color="#2C2F36" />
+        
         <SolidColorBrush x:Key="Yellow-100" Color="#FEF9C3" />
         <SolidColorBrush x:Key="Yellow-500" Color="#EAB308" />
 
@@ -156,7 +158,11 @@
                         </Interaction.Behaviors>
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="33,0,0,0" Spacing="15">
-                                <Button Classes="Outline">
+                                <ToggleButton 
+                                    Classes="Outline" 
+                                    IsVisible="{CompiledBinding IsCheckBoxVisible}"
+                                    IsChecked="{CompiledBinding IsAllSelected}"
+                                    Command="{CompiledBinding ToggleSelectAllCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
                                             Width="20"
@@ -164,12 +170,28 @@
                                             Path="avares://Vid2Audio/Assets/Svg/square-check-big.svg"
                                             Margin="0,0,8,0"
                                             VerticalAlignment="Center" />
-                                        <TextBlock Text="Select All" VerticalAlignment="Center" />
+                                        <TextBlock Text="{CompiledBinding SelectAllButtonText}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ToggleButton>
+                                <Button
+                                    Classes="Primary"
+                                    Background="{StaticResource Red-500}"
+                                    IsVisible="{CompiledBinding IsClearAllVisible}"
+                                    Command="{CompiledBinding ShowVideoItemsDeletionDialogCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Svg
+                                            Width="20"
+                                            Height="20"
+                                            Path="avares://Vid2Audio/Assets/Svg/trash-2-white.svg"
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center" />
+                                        <TextBlock Text="Clear All" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Button>
                                 <Button
                                     Classes="Primary"
-                                    Background="{StaticResource Green-500}">
+                                    Background="{StaticResource Black-500}"
+                                    IsVisible="{CompiledBinding IsDownloadAllVisible}">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
                                             Width="20"
@@ -195,8 +217,9 @@
                                               RowSpacing="15"
                                               VerticalAlignment="Top">
                                             <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
-                                                <CheckBox>
-                                                </CheckBox>
+                                                <CheckBox 
+                                                    IsVisible="{Binding $parent[UserControl].((vm:ConversionViewModel)DataContext).IsCheckBoxVisible}"
+                                                    IsChecked="{Binding IsVideoSelected, Mode=TwoWay}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                                                 <Border
