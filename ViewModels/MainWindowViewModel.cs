@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HotAvalonia;
 using ShadUI;
+using Vid2Audio.Components.ViewModels;
 
 namespace Vid2Audio.ViewModels;
 
@@ -15,6 +16,7 @@ public partial class MainWindowViewModel : ViewModelBase, INavigable, INotifyPro
     private readonly PageManager _pageManager;
     private readonly SearchViewModel _searchViewModel;
     private readonly ConversionViewModel  _conversionViewModel;
+    private readonly SettingsDialogViewModel  _settingsDialogViewModel;
     
     [ObservableProperty]
     private DialogManager _dialogManager;
@@ -28,13 +30,16 @@ public partial class MainWindowViewModel : ViewModelBase, INavigable, INotifyPro
     [ObservableProperty]
     private string _currentRoute = "search-view";
 
-    public MainWindowViewModel(DialogManager dialogManager, ToastManager toastManager, PageManager pageManager, SearchViewModel searchViewModel,  ConversionViewModel conversionViewModel)
+    public MainWindowViewModel(
+        DialogManager dialogManager, ToastManager toastManager, PageManager pageManager, SearchViewModel searchViewModel,  
+        ConversionViewModel conversionViewModel,  SettingsDialogViewModel settingsDialogViewModel)
     {
         _dialogManager = dialogManager;
         _toastManager = toastManager;
         _pageManager = pageManager;
         _searchViewModel = searchViewModel;
         _conversionViewModel = conversionViewModel;
+        _settingsDialogViewModel = settingsDialogViewModel;
 
         _pageManager.OnNavigate = SwitchPage;
     }
@@ -46,6 +51,7 @@ public partial class MainWindowViewModel : ViewModelBase, INavigable, INotifyPro
         _pageManager = new PageManager(new ServiceProvider());
         _searchViewModel = new SearchViewModel();
         _conversionViewModel = new ConversionViewModel();
+        _settingsDialogViewModel = new SettingsDialogViewModel();
     }
 
     [AvaloniaHotReload]
@@ -72,6 +78,25 @@ public partial class MainWindowViewModel : ViewModelBase, INavigable, INotifyPro
         {
             Debug.WriteLine($"Error switching page: {ex.Message}");
         }
+    }
+
+    [RelayCommand]
+    private void OpenSettingsDialog()
+    {
+        _settingsDialogViewModel.Initialize();
+        DialogManager.CreateDialog(_settingsDialogViewModel)
+            .WithSuccessCallback(_ =>
+                ToastManager.CreateToast("Settings Saved")
+                    .WithContent("Your preferences were updated.")
+                    .DismissOnClick()
+                    .ShowSuccess())
+            .WithCancelCallback(() =>
+                ToastManager.CreateToast("Changes Discarded")
+                    .WithContent("Unsaved edits were discarded.")
+                    .DismissOnClick()
+                    .ShowWarning()).WithMaxWidth(600)
+            .Dismissible()
+            .Show();
     }
     
     [RelayCommand]

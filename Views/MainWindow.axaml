@@ -36,5 +36,21 @@
     </shadui:Window.Hosts>
     <Panel>
         <TransitioningContentControl Content="{CompiledBinding SelectedPage}"/>
+        <Button 
+            Classes="Icon" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom"
+            ToolTip.Tip="Settings"
+            ToolTip.Placement="TopEdgeAlignedLeft"
+            ToolTip.VerticalOffset="-10"
+            Margin="15,0,0,30"
+            Command="{CompiledBinding OpenSettingsDialogCommand}">
+            <shadui:ButtonAssist.Icon>
+                <Svg
+                    Width="25"
+                    Height="25"
+                    Path="avares://Vid2Audio/Assets/Svg/settings.svg"/>
+            </shadui:ButtonAssist.Icon>
+        </Button>
     </Panel>
 </shadui:Window>
