@@ -20,7 +20,7 @@ local video files, Vid2Audio makes the process simple and efficient.
 ### 📁 Local File Processing
 - [ ] **Drag & Drop** - Simply drag video files into the application
 - [x] **Multiple Formats** - Supports MP4, MKV, AVI, MOV, and many more
-- [ ] **Batch Processing** - Convert multiple files at once
+- [x] **Batch Processing** - Convert multiple files at once
 
 ### 🎧 Audio Output Options
 - [x] MP3 (most popular)
@@ -31,8 +31,8 @@ local video files, Vid2Audio makes the process simple and efficient.
 
 ### 🚀 Key Benefits
 - [x] **Easy to Use** - Clean, intuitive interface
-- [ ] **Fast Conversion** - Optimized processing engine
-- [ ] **Quality Preservation** - Maintain original audio quality
+- [x] **Fast Conversion** - Optimized processing engine
+- [x] **Quality Preservation** - Maintain original audio quality
 - [ ] **Cross-Platform** - Works on Windows, macOS, and Linux
 - [x] **No Account Required** - Download and convert without registration
 
