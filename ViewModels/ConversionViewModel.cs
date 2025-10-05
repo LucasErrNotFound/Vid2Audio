@@ -144,6 +144,11 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
         var selectedVideoItems = VideoList.Where(item => item.IsVideoSelected).ToList();
         if (selectedVideoItems.Count == 0) return;
 
+        foreach (var item in selectedVideoItems)
+        {
+            item.IsDownloading = true;
+        }
+
         ToastManager!.CreateToast("Downloading, please wait...")
             .WithContent($"Downloading {selectedVideoItems.Count} video(s)")
             .DismissOnClick()
@@ -168,6 +173,13 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
                 .WithContent($"Error: {ex.Message}")
                 .DismissOnClick()
                 .ShowError();
+        }
+        finally
+        {
+            foreach (var item in selectedVideoItems)
+            {
+                item.IsDownloading = false;
+            }
         }
     }
 
@@ -291,6 +303,7 @@ public partial class VideoItem : ObservableObject
     [RelayCommand]
     private async Task DownloadVideoItem()
     {
+        IsDownloading = true;
         _toastManager.CreateToast("Downloading, please wait...")
             .WithContent($"Downloading: {VideoTitle}")
             .DismissOnClick()
@@ -303,5 +316,7 @@ public partial class VideoItem : ObservableObject
         
         if (result) toast.ShowSuccess();
         else toast.ShowError();
+        
+        IsDownloading = false;
     }
 }

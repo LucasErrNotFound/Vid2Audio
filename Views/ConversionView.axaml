@@ -220,7 +220,8 @@
                                             <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
                                                 <CheckBox 
                                                     IsVisible="{Binding $parent[UserControl].((vm:ConversionViewModel)DataContext).IsCheckBoxVisible}"
-                                                    IsChecked="{Binding IsVideoSelected, Mode=TwoWay}"/>
+                                                    IsChecked="{Binding IsVideoSelected, Mode=TwoWay}"
+                                                    IsEnabled="{CompiledBinding !IsDownloading}"/>
                                             </StackPanel>
                                             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                                                 <Border
@@ -278,7 +279,8 @@
                                                     SelectedIndex="0" 
                                                     Width="100"
                                                     ItemsSource="{CompiledBinding AudioFormatItems}"
-                                                    SelectedItem="{CompiledBinding SelectedAudioFormat}"/>
+                                                    SelectedItem="{CompiledBinding SelectedAudioFormat}"
+                                                    IsEnabled="{CompiledBinding !IsDownloading}" />
                                             </StackPanel>
                                             <StackPanel
                                                 Grid.Column="3"
@@ -289,7 +291,8 @@
                                                 <Button
                                                     Classes="Primary"
                                                     Background="{StaticResource Green-500}"
-                                                    Command="{CompiledBinding DownloadVideoItemCommand}">
+                                                    Command="{CompiledBinding DownloadVideoItemCommand}"
+                                                    IsEnabled="{CompiledBinding !IsDownloading}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Svg
                                                             Width="20"
@@ -302,7 +305,8 @@
                                                 </Button>
                                                 <Button
                                                     Classes="Icon"
-                                                    Command="{CompiledBinding DeleteVideoItemCommand}">
+                                                    Command="{CompiledBinding DeleteVideoItemCommand}"
+                                                    IsEnabled="{CompiledBinding !IsDownloading}">
                                                     <shadui:ButtonAssist.Icon>
                                                         <Svg
                                                             Width="10"
