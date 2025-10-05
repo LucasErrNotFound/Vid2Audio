@@ -59,6 +59,7 @@
                         Width="500"
                         shadui:ControlAssist.Height="45"
                         shadui:ControlAssist.ShowProgress="{CompiledBinding IsSearchingVideo}"
+                        IsEnabled="{CompiledBinding !IsSearchingVideo}"
                         Classes="Clearable"
                         FontSize="15"
                         Text="{CompiledBinding VideoLink, Mode=TwoWay}">
