@@ -15,17 +15,92 @@
         <vm:SettingsDialogViewModel />
     </Design.DataContext>
     
+    <UserControl.Styles>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+        
+        <Style Selector="TabItem /template/ ContentPresenter#ContentPresenter">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        
+        <Style Selector="TabItem:selected /template/ Border#SelectedBorder">
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <Setter Property="BoxShadow" Value="0 0 0 0 Transparent"/>
+        </Style>
+        
+        <Style Selector="TabItem:not(:selected) /template/ Border#SelectedBorder">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BoxShadow" Value="0 0 0 0 Transparent"/>
+        </Style>
+        
+        <Style Selector="TabItem:not(:selected):pointerover /template/ Border#SelectedBorder">
+            <Setter Property="Background" Value="#F5F5F5"/>
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+    </UserControl.Styles>
+    
     <Border
-        Background="{DynamicResource BackgroundColor}"
-        BorderBrush="{DynamicResource BorderColor}"
+        Background="White"
+        BorderBrush="White"
         BorderThickness="1"
         Padding="30">
-        <DockPanel >
+        <DockPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Interaction.Behaviors>
                     <scroll:VerticalScrollViewerAnimatedBehavior />
                 </Interaction.Behaviors>
-                <TextBlock Classes="h3" Text="Settings" />
+                <StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Classes="h3" Text="Settings" />
+                        <TextBlock 
+                            Classes="Caption Muted" 
+                            Text="Manage your app preferences and control where files are saved."
+                            TextWrapping="WrapWithOverflow"/>
+                    </StackPanel>
+                    <Separator Margin="0,10"/>
+                    <StackPanel>
+                        <TabControl>
+                            <TabControl.Template>
+                                <ControlTemplate TargetType="TabControl">
+                                    <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="5">
+
+                                        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,20,0">
+                                            <ItemsPresenter Name="PART_ItemsPresenter" /> 
+                                        </StackPanel>
+                                        
+                                        <Separator Grid.Column="1" Width="1" Height="515" Margin="0,0,20,0"/>
+
+                                        <Border
+                                            Grid.Column="2"
+                                            Background="Transparent"
+                                            Padding="20,0,0,0">
+                                            <ContentPresenter
+                                                Name="PART_SelectedContentHost"
+                                                Content="{TemplateBinding SelectedContent}"
+                                                ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch" />
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </TabControl.Template>
+                            <TabControl.Items>
+                                <TabItem Header="General">
+                                    <TextBlock Text="Hello World 1" />
+                                </TabItem>
+                                <TabItem Header="Profile">
+                                    <TextBlock Text="Hello World 2" />
+                                </TabItem>
+                            </TabControl.Items>
+                        </TabControl>
+                    </StackPanel>
+                </StackPanel>
             </ScrollViewer>
         </DockPanel>
     </Border>
