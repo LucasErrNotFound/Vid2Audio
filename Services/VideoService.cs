@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Vid2Audio.Services.Interface;
 using Vid2Audio.ViewModels;
@@ -59,7 +61,46 @@ public class VideoService : IVideoService
         var res = await ytdl.RunAudioDownload(videoItem.VideoUrl, audioFormat);
         return res.Success;
     }
-    
+
+    public async Task<bool> DownloadMultipleVideosAsync(IEnumerable<VideoItem> videoItems)
+    {
+        var videoList = videoItems.ToList();
+        var downloadTasks = videoList.Select(async video =>
+        {
+            var ytdl = new YoutubeDL
+            {
+                YoutubeDLPath = @"Binaries\yt-dlp.exe",
+                FFmpegPath = "ffmpeg.exe",
+                OutputFolder = "Downloads"
+            };
+
+            var audioFormat = video.SelectedAudioFormat switch
+            {
+                "MP3" => AudioConversionFormat.Mp3,
+                "WAV" => AudioConversionFormat.Wav,
+                "FLAC" => AudioConversionFormat.Flac,
+                "M4A" => AudioConversionFormat.M4a,
+                "AAC" => AudioConversionFormat.Aac,
+                _ => AudioConversionFormat.Mp3
+            };
+
+            var options = new OptionSet
+            {
+                PostprocessorArgs = new[]
+                {
+                    "ffmpeg:-acodec libmp3lame -b:a 320k",  // Example: high quality audio encoding
+                    "ffmpeg:-ar 48000"  // Example: set sample rate to 48kHz
+                }
+            };
+
+            var res = await ytdl.RunAudioDownload(video.VideoUrl, audioFormat, overrideOptions: options);
+            return res.Success;
+        });
+
+        var results = await Task.WhenAll(downloadTasks);
+        return results.All(success => success);
+    }
+
     public void RemoveVideo(VideoItem videoItem)
     {
         VideoList.Remove(videoItem);
