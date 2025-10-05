@@ -140,6 +140,34 @@
                                             </StackPanel>
                                         </Grid>
                                         <Separator Margin="0,15"/>
+                                        <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto" Margin="12" RowSpacing="30" ColumnSpacing="50">
+                                            <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock Text="Audio Bitrate" FontSize="16" FontWeight="SemiBold"/>
+                                                <TextBlock Text="Set the audio bitrate" Classes="Caption Muted"/>
+                                            </StackPanel>
+
+                                            <ComboBox
+                                                Grid.Row="0" Grid.Column="1"
+                                                Width="150"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                ToolTip.Tip="Common values: 128 kbps, 192 kbps, 320 kbps"
+                                                AutomationProperties.Name="Audio Bitrate ComboBox" />
+
+                                            <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock Text="Sample Rate" FontSize="16" FontWeight="SemiBold"/>
+                                                <TextBlock Text="Set the sample rate" Classes="Caption Muted"/>
+                                            </StackPanel>
+
+                                            <ComboBox
+                                                Grid.Row="1" Grid.Column="1"
+                                                Width="150"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                ToolTip.Tip="Common values: 44100 (44.1 kHz), 48000 (48 kHz)"
+                                                AutomationProperties.Name="Sample Rate ComboBox" />
+                                        </Grid>
+                                        <Separator Margin="0,15"/>
                                     </StackPanel>
                                 </TabItem>
                                 <TabItem Header="Profile">
