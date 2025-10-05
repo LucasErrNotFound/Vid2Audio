@@ -88,8 +88,8 @@ public class VideoService : IVideoService
             {
                 PostprocessorArgs = new[]
                 {
-                    "ffmpeg:-acodec libmp3lame -b:a 320k",  // Example: high quality audio encoding
-                    "ffmpeg:-ar 48000"  // Example: set sample rate to 48kHz
+                    "ffmpeg:-acodec libmp3lame -b:a 320k",
+                    "ffmpeg:-ar 48000"
                 }
             };
 
