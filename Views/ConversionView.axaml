@@ -162,6 +162,7 @@
                                     Classes="Outline" 
                                     IsVisible="{CompiledBinding IsCheckBoxVisible}"
                                     IsChecked="{CompiledBinding IsAllSelected}"
+                                    IsEnabled="{CompiledBinding !IsAnyVideoDownloading}"
                                     Command="{CompiledBinding ToggleSelectAllCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
@@ -177,6 +178,7 @@
                                     Classes="Primary"
                                     Background="{StaticResource Red-500}"
                                     IsVisible="{CompiledBinding IsClearAllVisible}"
+                                    IsEnabled="{CompiledBinding !IsAnyVideoDownloading}"
                                     Command="{CompiledBinding ShowVideoItemsDeletionDialogCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
@@ -185,7 +187,7 @@
                                             Path="avares://Vid2Audio/Assets/Svg/trash-2-white.svg"
                                             Margin="0,0,8,0"
                                             VerticalAlignment="Center" />
-                                        <TextBlock Text="Clear All" VerticalAlignment="Center" />
+                                        <TextBlock Text="{CompiledBinding ClearButtonText}" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Button>
                                 <Button
@@ -200,7 +202,7 @@
                                             Path="avares://Vid2Audio/Assets/Svg/download.svg"
                                             Margin="0,0,8,0"
                                             VerticalAlignment="Center" />
-                                        <TextBlock Text="Download All" VerticalAlignment="Center" />
+                                        <TextBlock Text="{CompiledBinding DownloadButtonText}" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Button>
                             </StackPanel>

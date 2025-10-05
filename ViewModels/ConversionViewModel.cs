@@ -32,7 +32,16 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
     private bool _isCheckBoxVisible;
     
     [ObservableProperty]
+    private bool _isAnyVideoDownloading;
+    
+    [ObservableProperty]
     private string _selectAllButtonText = "Select All";
+    
+    [ObservableProperty]
+    private string _clearButtonText = "Clear Selected";
+
+    [ObservableProperty]
+    private string _downloadButtonText = "Download Selected";
     
     public ObservableCollection<VideoItem> VideoList => VideoService!.VideoList;
 
@@ -121,6 +130,8 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
         }
     
         SelectAllButtonText = IsAllSelected ? "Unselect All" : "Select All";
+        ClearButtonText = IsAllSelected ? "Clear All" : "Clear Selected";
+        DownloadButtonText = IsAllSelected ? "Download All" : "Download Selected";
         UpdateVisibilityStates();
     }
 
@@ -148,6 +159,8 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
         {
             item.IsDownloading = true;
         }
+        
+        IsAnyVideoDownloading = true;
 
         ToastManager!.CreateToast("Downloading, please wait...")
             .WithContent($"Downloading {selectedVideoItems.Count} video(s)")
@@ -180,6 +193,8 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
             {
                 item.IsDownloading = false;
             }
+            
+            IsAnyVideoDownloading = false;
         }
     }
 
@@ -219,12 +234,17 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
         {
             IsAllSelected = false;
             SelectAllButtonText = "Select All";
+            ClearButtonText = "Clear Selected";
+            DownloadButtonText = "Download Selected";
             return;
         }
     
         var allSelected = VideoList.All(v => v.IsVideoSelected);
         IsAllSelected = allSelected;
+        
         SelectAllButtonText = allSelected ? "Unselect All" : "Select All";
+        ClearButtonText = allSelected ? "Clear All" : "Clear Selected";
+        DownloadButtonText = allSelected ? "Download All" : "Download Selected";
     }
     
     public async Task OpenFileDialog()
