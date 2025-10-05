@@ -1,0 +1,32 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Vid2Audio.Components.ViewModels"
+    xmlns:scroll="using:Xaml.Behaviors.Interactions.Animated"
+    x:DataType="vm:SettingsDialogViewModel"
+    x:Class="Vid2Audio.Components.SettingsDialog.SettingsDialogView"
+    mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="650"
+    Width="600"
+    Height="650">
+    
+    <Design.DataContext>
+        <vm:SettingsDialogViewModel />
+    </Design.DataContext>
+    
+    <Border
+        Background="{DynamicResource BackgroundColor}"
+        BorderBrush="{DynamicResource BorderColor}"
+        BorderThickness="1"
+        Padding="30">
+        <DockPanel >
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Interaction.Behaviors>
+                    <scroll:VerticalScrollViewerAnimatedBehavior />
+                </Interaction.Behaviors>
+                <TextBlock Classes="h3" Text="Settings" />
+            </ScrollViewer>
+        </DockPanel>
+    </Border>
+</UserControl>
