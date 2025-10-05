@@ -19,6 +19,7 @@
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="Black-500" Color="#2C2F36" />
+        <SolidColorBrush x:Key="Gray-100" Color="#F3F4F6" />
         
         <SolidColorBrush x:Key="Yellow-100" Color="#FEF9C3" />
         <SolidColorBrush x:Key="Yellow-500" Color="#EAB308" />
@@ -309,7 +310,8 @@
                                                 <Button
                                                     Classes="Icon"
                                                     Command="{CompiledBinding DeleteVideoItemCommand}"
-                                                    IsEnabled="{CompiledBinding !IsDownloading}">
+                                                    IsEnabled="{CompiledBinding !IsDownloading}"
+                                                    Background="{StaticResource Gray-100}">
                                                     <shadui:ButtonAssist.Icon>
                                                         <Svg
                                                             Width="10"
