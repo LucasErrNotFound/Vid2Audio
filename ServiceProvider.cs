@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Jab;
 using Serilog;
 using ShadUI;
+using Vid2Audio.Components.ViewModels;
 using Vid2Audio.Services;
 using Vid2Audio.Services.Interface;
 using Vid2Audio.ViewModels;
@@ -15,6 +16,7 @@ namespace Vid2Audio;
 [Transient<MainWindowViewModel>]
 [Transient<SearchViewModel>]
 [Transient<ConversionViewModel>]
+[Transient<SettingsDialogViewModel>]
 [Singleton<DialogManager>]
 [Singleton<ToastManager>]
 [Singleton<IMessenger, WeakReferenceMessenger>]

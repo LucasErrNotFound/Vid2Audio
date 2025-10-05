@@ -32,7 +32,7 @@ public partial class App : Application
         }
         
         DisableAvaloniaDataAnnotationValidation();
-        var provider = new ServiceProvider();
+        var provider = new ServiceProvider().RegisterDialogs();
         
         var viewModel = provider.GetService<MainWindowViewModel>();
         viewModel.Initialize();
