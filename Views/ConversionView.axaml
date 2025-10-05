@@ -191,7 +191,8 @@
                                 <Button
                                     Classes="Primary"
                                     Background="{StaticResource Black-500}"
-                                    IsVisible="{CompiledBinding IsDownloadAllVisible}">
+                                    IsVisible="{CompiledBinding IsDownloadAllVisible}"
+                                    Command="{CompiledBinding DownloadMultipleVideosCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <Svg
                                             Width="20"

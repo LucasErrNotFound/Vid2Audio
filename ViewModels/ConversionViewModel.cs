@@ -137,6 +137,39 @@ public partial class ConversionViewModel : VideoViewModelBase, INavigable
             .Dismissible()
             .Show();
     }
+    
+    [RelayCommand]
+    private async Task DownloadMultipleVideos()
+    {
+        var selectedVideoItems = VideoList.Where(item => item.IsVideoSelected).ToList();
+        if (selectedVideoItems.Count == 0) return;
+
+        ToastManager!.CreateToast("Downloading, please wait...")
+            .WithContent($"Downloading {selectedVideoItems.Count} video(s)")
+            .DismissOnClick()
+            .ShowInfo();
+
+        try
+        {
+            var result = await VideoService!.DownloadMultipleVideosAsync(selectedVideoItems);
+        
+            var toast = ToastManager!.CreateToast(result ? "Multiple Audio Download Successfully" : "Multiple Audio Download Failed")
+                .WithContent($"Downloaded {selectedVideoItems.Count} video(s)")
+                .DismissOnClick();
+
+            if (result) 
+                toast.ShowSuccess();
+            else 
+                toast.ShowError();
+        }
+        catch (Exception ex)
+        {
+            ToastManager!.CreateToast("Download Failed")
+                .WithContent($"Error: {ex.Message}")
+                .DismissOnClick()
+                .ShowError();
+        }
+    }
 
     private async Task OnSubmitDeleteMultipleVideoItems()
     {
